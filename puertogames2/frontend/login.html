@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Inicio de Sesión</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!--Link a los iconos de FontAwesome-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            background-image: url('img/gJzuHB.jpg'); /* Asegúrate de que la ruta sea correcta */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* Esto asegura que el fondo no se desplace al hacer scroll */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+
+<!-- NAV -->
+<div class="flex bg-stone-950 shadow-xl bg-opacity-30 text-white">
+    <div class="flex flex-col sm:flex-row items-center sm:items-baseline justify-between w-full px-4 py-2">
+
+        <!-- LOGO y TÍTULO -->
+        <div class="flex items-center sm:ml-4">
+            <img src="img/ImagenLogo.png" alt="Puerto Games Logo" class="h-14 w-auto" />
+            <a href="index.html" class="text-white text-2xl font-semibold ml-4 sm:ml-0">Puerto Games</a>
+        </div>
+
+        <!-- MENÚ DERECHO -->
+        <div class="flex justify-center items-center w-full sm:w-auto">
+            <ul class="text-white text-lg font-semibold flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+                <li class="sm:order-last">
+                    <a class="fa-solid fa-user hover:text-emerald-300 transition text-2xl" href="login.html" id="iconoUsuario"></a>
+                </li>
+                <li><a class="hover:text-emerald-300 transition" href="index.html">Inicio</a></li>
+                <li><a class="hover:text-emerald-300 transition" href="nosotros.html">Nosotros</a></li>
+                <li><a class="hover:text-emerald-300 transition" href="stockTienda.html">Stock</a></li>
+                <li><a class="hover:text-emerald-300 transition" href="busqueda.html">Juegos</a></li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+
+
+<!-- LOGIN FORM -->
+<div class="flex items-center justify-center min-h-screen">
+    <form id="loginForm" class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h2 class="text-2xl font-bold mb-6 text-center text-gray-800 flex items-center justify-center space-x-2">
+            <i class="fas fa-sign-in-alt text-blue-600"></i>
+            <span>Iniciar Sesión</span>
+        </h2>
+        <input id="correo" type="email" placeholder="Correo electrónico" required
+               class="w-full mb-3 p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <input id="contrasena" type="password" placeholder="Contraseña" required
+               class="w-full mb-4 p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
+
+        <button type="submit"
+                class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors duration-300">
+            <i class="fas fa-unlock-alt mr-2"></i>Entrar
+        </button>
+
+        <div class="mt-4 flex justify-between text-sm">
+            <a href="#" class="text-blue-600 hover:underline">¿Olvidaste tu contraseña?</a>
+            <a href="registro.html" class="text-blue-600 hover:underline">Registrarse</a>
+        </div>
+
+        <p id="mensaje" class="mt-4 text-center text-red-600"></p>
+    </form>
+</div>
+
+<!-- SCRIPT LOGIN -->
+<script>
+    const form = document.getElementById('loginForm');
+    const mensaje = document.getElementById('mensaje');
+
+    form.addEventListener('submit', async e => {
+        e.preventDefault();
+        mensaje.textContent = '';
+
+        const correo = document.getElementById('correo').value;
+        const contrasena = document.getElementById('contrasena').value;
+
+        try {
+            const res = await fetch('http://localhost:8080/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ correo, contrasena })
+            });
+
+            if (res.ok) {
+                mensaje.style.color = 'green';
+                mensaje.textContent = 'Login exitoso';
+                // Redirigir al index.html si el login es exitoso
+                setTimeout(() => {
+                    window.location.href = 'stockTienda.html';
+                }, 1000); // Espera 1 segundo antes de redirigir
+            } else if (res.status === 401) {
+                mensaje.textContent = 'Correo o contraseña incorrectos';
+            } else {
+                mensaje.textContent = 'Error en el servidor';
+            }
+        } catch (error) {
+            mensaje.textContent = 'No se pudo conectar al servidor';
+        }
+    });
+</script>
+
+<!-- FOOTER -->
+<footer class="bg-stone-950 shadow-xl bg-opacity-70 text-white mt-8">
+    <div class="max-w-7xl mx-auto px-4 py-6 flex flex-col items-center space-y-4">
+        <div class="text-center">
+            <h3 class="text-lg font-semibold">Puerto Games</h3>
+            <p class="text-sm">Tu portal de videojuegos favoritos</p>
+        </div>
+    </div>
+
+    <div class="text-center text-sm bg-stone-950 bg-opactity-80 py-2">
+        © 2025 Puerto Games - Todos los derechos reservados.
+    </div>
+</footer>
+</body>
+</html>
+
