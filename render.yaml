@@ -2,8 +2,6 @@ services:
   - type: web
     name: puertogames-backend
     env: java
-    plan: free
-    region: oregon
     rootDir: puertogames2/backend/puertogames-api
     buildCommand: ./mvnw clean package -DskipTests
     startCommand: java -jar target/*.jar
