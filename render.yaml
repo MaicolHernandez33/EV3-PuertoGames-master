@@ -1,6 +1,7 @@
 services:
   - type: web
     name: puertogames-backend
+    runtime: java
     rootDir: puertogames2/backend/puertogames-api
     buildCommand: ./mvnw clean package -DskipTests
     startCommand: java -jar target/*.jar
